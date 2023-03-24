@@ -18,6 +18,7 @@
         }
         static void Main(string[] args)
         {
+            bool quit = false;
             string defaultFile = "..\\..\\..\\dict\\sweeng.lis";
             Console.WriteLine("Welcome to the dictionary app!");
             do
@@ -25,9 +26,10 @@
                 Console.Write("> ");
                 string[] argument = Console.ReadLine().Split();
                 string command = argument[0];
-                if (command == "quit") // FIXME: gör så programmet stängs av om kommando är quit
+                if (command == "quit")
                 {
                     Console.WriteLine("Goodbye!");
+                    quit = true;
                 }
                 else if (command == "load")
                 {
@@ -75,27 +77,15 @@
                 }
                 else if (command == "translate")
                 {
-                    if (argument.Length == 2)
+                    if (argument.Length > 1)
                     {
-                        foreach(SweEngGloss gloss in dictionary)
-                        {
-                            if (gloss.word_swe == argument[1])
-                                Console.WriteLine($"English for {gloss.word_swe} is {gloss.word_eng}");
-                            if (gloss.word_eng == argument[1])
-                                Console.WriteLine($"Swedish for {gloss.word_eng} is {gloss.word_swe}");
-                        }
+                        TranslateWord(argument[1]);
                     }
-                    else if (argument.Length == 1)
+                    else
                     {
                         Console.WriteLine("Write word to be translated: ");
-                        string s = Console.ReadLine();
-                        foreach (SweEngGloss gloss in dictionary)
-                        {
-                            if (gloss.word_swe == s)
-                                Console.WriteLine($"English for {gloss.word_swe} is {gloss.word_eng}");
-                            if (gloss.word_eng == s)
-                                Console.WriteLine($"Swedish for {gloss.word_eng} is {gloss.word_swe}");
-                        }
+                        string wordToBeTranslated = Console.ReadLine();
+                        TranslateWord(wordToBeTranslated);
                     }
                 }
                 else
@@ -103,7 +93,18 @@
                     Console.WriteLine($"Unknown command: '{command}'");
                 }
             }
-            while (true);
+            while (!quit);
+        }
+
+        private static void TranslateWord(string wordToBeTranslated)
+        {
+            foreach (SweEngGloss gloss in dictionary) // FIXME: lägg till en utskrift som gäller om ordet heter samma på engelska och svenska
+            {
+                if (gloss.word_swe == wordToBeTranslated) 
+                    Console.WriteLine($"English for {gloss.word_swe} is {gloss.word_eng}");
+                if (gloss.word_eng == wordToBeTranslated)
+                    Console.WriteLine($"Swedish for {gloss.word_eng} is {gloss.word_swe}");
+            }
         }
 
         private static void DeleteMatchingWords(string swedishWord, string englishWord)
