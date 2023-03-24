@@ -31,11 +31,12 @@
                 }
                 else if (command == "load")
                 {
+                    // FIXME: lägg till beskräftelse att filen laddats in korrekt
                     if(argument.Length == 2)
                     {
                         using (StreamReader sr = new StreamReader(argument[1]))
                         {
-                            dictionary = new List<SweEngGloss>(); // Empty it!
+                            dictionary = new List<SweEngGloss>(); // FIXME: Töm listan istället för att skapa en ny
                             string line = sr.ReadLine();
                             while (line != null)
                             {
@@ -49,7 +50,7 @@
                     {
                         using (StreamReader sr = new StreamReader(defaultFile))
                         {
-                            dictionary = new List<SweEngGloss>(); // Empty it!
+                            dictionary = new List<SweEngGloss>(); // FIXME: Töm listan istället för att skapa en ny
                             string line = sr.ReadLine();
                             while (line != null)
                             {
@@ -69,6 +70,7 @@
                 }
                 else if (command == "new")
                 {
+                    // FIXME: lägg till bekräftelse vilket ord som lagts till
                     if (argument.Length == 3)
                     {
                         dictionary.Add(new SweEngGloss(argument[1], argument[2]));
@@ -84,6 +86,7 @@
                 }
                 else if (command == "delete")
                 {
+                    // FIXME: lägg till bekräftelse vilket ord som tagits bort
                     if (argument.Length == 3)
                     {
                         int index = -1;
@@ -96,12 +99,12 @@
                     }
                     else if (argument.Length == 1)
                     {
-                        Console.WriteLine("Write word in Swedish: ");
+                        Console.WriteLine("Write word in Swedish: "); // FIXME: bryt ut till AskForSwedishWord
                         string s = Console.ReadLine();
-                        Console.Write("Write word in English: ");
+                        Console.Write("Write word in English: "); // FIXME: bryt ut till AskForEnglishWord
                         string e = Console.ReadLine();
                         int index = -1;
-                        for (int i = 0; i < dictionary.Count; i++)
+                        for (int i = 0; i < dictionary.Count; i++) // FIXME: bryt ut till LookForMatchingWords( string swedishWord, string englishWord)
                         {
                             SweEngGloss gloss = dictionary[i];
                             if (gloss.word_swe == s && gloss.word_eng == e)
