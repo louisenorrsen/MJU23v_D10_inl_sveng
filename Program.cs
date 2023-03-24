@@ -21,6 +21,7 @@
             bool quit = false;
             string defaultFile = "sweeng.lis";
             Console.WriteLine("Welcome to the dictionary app!");
+            PrintHelp();
             do
             {
                 Console.Write("> ");
@@ -30,6 +31,10 @@
                 {
                     Console.WriteLine("Goodbye!");
                     quit = true;
+                }
+                else if (command == "help")
+                {
+                    PrintHelp();
                 }
                 else if (command == "load")
                 {
@@ -45,7 +50,7 @@
                 }
                 else if (command == "list")
                 {
-                    if (dictionary.Count > 0) // FIXME: Lägg till felhantering med try-catch
+                    if (dictionary.Count > 0)
                     {
                         foreach (SweEngGloss gloss in dictionary) Console.WriteLine($"{gloss.word_swe,-15}  - {gloss.word_eng,-15}");
 
@@ -68,8 +73,7 @@
                         Console.WriteLine("The input was not valid, please enter one swdish word and one english word.\n" + ex.Message);
                     }
                 }
-                else if (command == "delete") // FIXME: System.ArgumentOutOfRangeException - om delete innan load
-                                              // System.ArgumentOutOfRangeException - om ordet inte finns
+                else if (command == "delete")
                 { // TBD: Känn av motsvarande ord automatiskt
                     try
                     {
@@ -99,6 +103,18 @@
                 else Console.WriteLine($"Unknown command: '{command}'");
             }
             while (!quit);
+        }
+
+        private static void PrintHelp()
+        {
+            Console.WriteLine($"{"quit", -30} - {"stop the program and quit", -30}\n" +
+                $"{"load",-30} - {"load default file 'sweeng.lis'",-30}\n" +
+                $"{"load /file name/",-30} - {"load the entered file",-30} \n" +
+                $"{"list",-30} - {"list the words in the dictionary",-30} \n" +
+                $"{"new /swe word/ /eng word/",-30} - {"add a new word to the dictionary",-30} \n" +
+                $"{"delete /swe word/ /eng word/",-30} - {"delete a word from the dictionary",-30}  \n" +
+                $"{"translate /word/",-30} - {"translates the entered word",-30}  \n" +
+                $"{"help",-30} - {"prints out this help list",-30}  \n");
         }
 
         private static void TranslateWord(string wordToBeTranslated)
