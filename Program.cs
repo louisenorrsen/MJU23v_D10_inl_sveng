@@ -25,17 +25,17 @@
                 Console.Write("> ");
                 string[] argument = Console.ReadLine().Split();
                 string command = argument[0];
-                if (command == "quit")
+                if (command == "quit") // FIXME: gör så programmet stängs av om kommando är quit
                 {
                     Console.WriteLine("Goodbye!");
                 }
                 else if (command == "load")
                 {
-                    if(argument.Length == 2)
+                    if(argument.Length > 1)
                     {
                         LoadFileWithWords(argument[1]);
                     }
-                    else if(argument.Length == 1)
+                    else
                     {
                         LoadFileWithWords(defaultFile);
                     }
@@ -49,16 +49,15 @@
                 }
                 else if (command == "new")
                 {
-                    // FIXME: lägg till bekräftelse vilket ord som lagts till
-                    if (argument.Length == 3)
+                    if (argument.Length > 1)
                     {
-                        dictionary.Add(new SweEngGloss(argument[1], argument[2])); // FIXME: bryt ut till AddNewGloss(string swedishWord, string englisWord)
+                        AddNewGlossToDictionary(argument[1], argument[2]);
                     }
-                    else if(argument.Length == 1)
+                    else
                     {
                         string swedishWord = AskForSwedishWord();
                         string englishWord = AskForEnglishWord();
-                        dictionary.Add(new SweEngGloss(swedishWord, englishWord));
+                        AddNewGlossToDictionary(swedishWord, englishWord);
                     }
                 }
                 else if (command == "delete")
@@ -121,6 +120,12 @@
             while (true);
         }
 
+        private static void AddNewGlossToDictionary(string swedishWord, string englishWord)
+        {
+            dictionary.Add(new SweEngGloss(swedishWord, englishWord));
+            Console.WriteLine($"Words '{swedishWord}' and '{englishWord}' was added in the dictionary");
+        }
+
         private static void LoadFileWithWords(string fileName)
         {
             using (StreamReader streamReader = new StreamReader(fileName)) // FIXME ändra så agrumentet läses ifrån dict-mappen
@@ -140,14 +145,14 @@
         private static string AskForEnglishWord()
         {
             Console.Write("Write word in English: ");
-            string englishWord = Console.ReadLine();
+            string englishWord = Console.ReadLine().Trim();
             return englishWord;
         }
 
         private static string AskForSwedishWord()
         {
             Console.WriteLine("Write word in Swedish: ");
-            string swedishWord = Console.ReadLine();
+            string swedishWord = Console.ReadLine().Trim();
             return swedishWord;
         }
     }
