@@ -35,14 +35,8 @@
                 {
                     try
                     {
-                        if (argument.Length > 1)
-                        {
-                            LoadFileWithWords(argument[1]);
-                        }
-                        else
-                        {
-                            LoadFileWithWords(defaultFile);
-                        }
+                        if (argument.Length > 1) LoadFileWithWords(argument[1]);
+                        else LoadFileWithWords(defaultFile);
                     }
                     catch (System.IO.FileNotFoundException ex)
                     {
@@ -51,7 +45,7 @@
                 }
                 else if (command == "list")
                 {
-                    if (dictionary.Count > 0)
+                    if (dictionary.Count > 0) // FIXME: Lägg till felhantering med try-catch
                     {
                         foreach (SweEngGloss gloss in dictionary)
                         {
@@ -62,12 +56,9 @@
                         Console.WriteLine("The dictionary is empty, please load a file first!");
                     }
                 }
-                else if (command == "new")
+                else if (command == "new") // FIXME: System.IndexOutOfRangeException - om input är 'new sol'
                 {
-                    if (argument.Length > 1)
-                    {
-                        AddNewGlossToDictionary(argument[1], argument[2]);
-                    }
+                    if (argument.Length > 1) AddNewGlossToDictionary(argument[1], argument[2]);
                     else
                     {
                         string swedishWord = AskForSwedishWord();
@@ -75,12 +66,10 @@
                         AddNewGlossToDictionary(swedishWord, englishWord);
                     }
                 }
-                else if (command == "delete")
-                {
-                    if (argument.Length > 1)
-                    {
-                        DeleteMatchingWords(argument[1], argument[2]);
-                    }
+                else if (command == "delete") // FIXME: System.ArgumentOutOfRangeException - om delete innan load
+                                              // System.ArgumentOutOfRangeException - om ordet inte finns
+                { // TBD: Känn av motsvarande ord automatiskt
+                    if (argument.Length > 1) DeleteMatchingWords(argument[1], argument[2]);
                     else
                     {
                         string swedishWord = AskForSwedishWord();
@@ -90,10 +79,7 @@
                 }
                 else if (command == "translate")
                 {
-                    if (argument.Length > 1)
-                    {
-                        TranslateWord(argument[1]);
-                    }
+                    if (argument.Length > 1) TranslateWord(argument[1]);
                     else
                     {
                         Console.WriteLine("Write word to be translated: ");
@@ -101,10 +87,7 @@
                         TranslateWord(wordToBeTranslated);
                     }
                 }
-                else
-                {
-                    Console.WriteLine($"Unknown command: '{command}'");
-                }
+                else Console.WriteLine($"Unknown command: '{command}'");
             }
             while (!quit);
         }
@@ -126,8 +109,7 @@
             for (int i = 0; i < dictionary.Count; i++)
             {
                 SweEngGloss gloss = dictionary[i];
-                if (gloss.word_swe == swedishWord && gloss.word_eng == englishWord)
-                    index = i;
+                if (gloss.word_swe == swedishWord && gloss.word_eng == englishWord) index = i;
             }
             Console.WriteLine($"Words '{swedishWord}' and '{englishWord}' was deleted");
             dictionary.RemoveAt(index);
@@ -141,7 +123,7 @@
 
         private static void LoadFileWithWords(string fileName)
         {
-            using (StreamReader streamReader = new StreamReader($"..\\..\\..\\dict\\{fileName}")) // FIXME ändra så agrumentet läses ifrån dict-mappen
+            using (StreamReader streamReader = new StreamReader($"..\\..\\..\\dict\\{fileName}"))
             {
                 dictionary.Clear();
                 string line = streamReader.ReadLine();
@@ -158,15 +140,13 @@
         private static string AskForEnglishWord()
         {
             Console.Write("Write word in English: ");
-            string englishWord = Console.ReadLine().Trim();
-            return englishWord;
+            return Console.ReadLine().Trim();
         }
 
         private static string AskForSwedishWord()
         {
             Console.WriteLine("Write word in Swedish: ");
-            string swedishWord = Console.ReadLine().Trim();
-            return swedishWord;
+            return Console.ReadLine().Trim();
         }
     }
 }
