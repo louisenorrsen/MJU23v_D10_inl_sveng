@@ -73,15 +73,13 @@
                     // FIXME: lägg till bekräftelse vilket ord som lagts till
                     if (argument.Length == 3)
                     {
-                        dictionary.Add(new SweEngGloss(argument[1], argument[2]));
+                        dictionary.Add(new SweEngGloss(argument[1], argument[2])); // FIXME: bryt ut till AddNewGloss(string swedishWord, string englisWord)
                     }
                     else if(argument.Length == 1)
                     {
-                        Console.WriteLine("Write word in Swedish: ");
-                        string s = Console.ReadLine();
-                        Console.Write("Write word in English: ");
-                        string e = Console.ReadLine();
-                        dictionary.Add(new SweEngGloss(s, e));
+                        string swedishWord = AskForSwedishWord();
+                        string englishWord = AskForEnglishWord();
+                        dictionary.Add(new SweEngGloss(swedishWord, englishWord));
                     }
                 }
                 else if (command == "delete")
@@ -99,15 +97,13 @@
                     }
                     else if (argument.Length == 1)
                     {
-                        Console.WriteLine("Write word in Swedish: "); // FIXME: bryt ut till AskForSwedishWord
-                        string s = Console.ReadLine();
-                        Console.Write("Write word in English: "); // FIXME: bryt ut till AskForEnglishWord
-                        string e = Console.ReadLine();
+                        string swedishWord = AskForSwedishWord();
+                        string englishWord = AskForEnglishWord();
                         int index = -1;
                         for (int i = 0; i < dictionary.Count; i++) // FIXME: bryt ut till LookForMatchingWords( string swedishWord, string englishWord)
                         {
                             SweEngGloss gloss = dictionary[i];
-                            if (gloss.word_swe == s && gloss.word_eng == e)
+                            if (gloss.word_swe == swedishWord && gloss.word_eng == englishWord)
                                 index = i;
                         }
                         dictionary.RemoveAt(index);
@@ -144,6 +140,20 @@
                 }
             }
             while (true);
+        }
+
+        private static string AskForEnglishWord()
+        {
+            Console.Write("Write word in English: ");
+            string englishWord = Console.ReadLine();
+            return englishWord;
+        }
+
+        private static string AskForSwedishWord()
+        {
+            Console.WriteLine("Write word in Swedish: ");
+            string swedishWord = Console.ReadLine();
+            return swedishWord;
         }
     }
 }
