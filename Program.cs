@@ -34,29 +34,29 @@
                     // FIXME: lägg till beskräftelse att filen laddats in korrekt
                     if(argument.Length == 2)
                     {
-                        using (StreamReader sr = new StreamReader(argument[1]))
+                        using (StreamReader streamReader = new StreamReader(argument[1]))
                         {
                             dictionary = new List<SweEngGloss>(); // FIXME: Töm listan istället för att skapa en ny
-                            string line = sr.ReadLine();
+                            string line = streamReader.ReadLine();
                             while (line != null)
                             {
                                 SweEngGloss gloss = new SweEngGloss(line);
                                 dictionary.Add(gloss);
-                                line = sr.ReadLine();
+                                line = streamReader.ReadLine();
                             }
                         }
                     }
                     else if(argument.Length == 1)
                     {
-                        using (StreamReader sr = new StreamReader(defaultFile))
+                        using (StreamReader streamReader = new StreamReader(defaultFile))
                         {
                             dictionary = new List<SweEngGloss>(); // FIXME: Töm listan istället för att skapa en ny
-                            string line = sr.ReadLine();
+                            string line = streamReader.ReadLine();
                             while (line != null)
                             {
                                 SweEngGloss gloss = new SweEngGloss(line);
                                 dictionary.Add(gloss);
-                                line = sr.ReadLine();
+                                line = streamReader.ReadLine();
                             }
                         }
                     }
