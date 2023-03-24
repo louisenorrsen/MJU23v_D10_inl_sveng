@@ -62,29 +62,15 @@
                 }
                 else if (command == "delete")
                 {
-                    // FIXME: lägg till bekräftelse vilket ord som tagits bort
-                    if (argument.Length == 3)
+                    if (argument.Length > 1)
                     {
-                        int index = -1;
-                        for (int i = 0; i < dictionary.Count; i++) {
-                            SweEngGloss gloss = dictionary[i];
-                            if (gloss.word_swe == argument[1] && gloss.word_eng == argument[2])
-                                index = i;
-                        }
-                        dictionary.RemoveAt(index);
+                        DeleteMatchingWords(argument[1], argument[2]);
                     }
-                    else if (argument.Length == 1)
+                    else
                     {
                         string swedishWord = AskForSwedishWord();
                         string englishWord = AskForEnglishWord();
-                        int index = -1;
-                        for (int i = 0; i < dictionary.Count; i++) // FIXME: bryt ut till LookForMatchingWords( string swedishWord, string englishWord)
-                        {
-                            SweEngGloss gloss = dictionary[i];
-                            if (gloss.word_swe == swedishWord && gloss.word_eng == englishWord)
-                                index = i;
-                        }
-                        dictionary.RemoveAt(index);
+                        DeleteMatchingWords(swedishWord, englishWord);
                     }
                 }
                 else if (command == "translate")
@@ -118,6 +104,19 @@
                 }
             }
             while (true);
+        }
+
+        private static void DeleteMatchingWords(string swedishWord, string englishWord)
+        {
+            int index = -1;
+            for (int i = 0; i < dictionary.Count; i++)
+            {
+                SweEngGloss gloss = dictionary[i];
+                if (gloss.word_swe == swedishWord && gloss.word_eng == englishWord)
+                    index = i;
+            }
+            Console.WriteLine($"Words '{swedishWord}' and '{englishWord}' was deleted");
+            dictionary.RemoveAt(index);
         }
 
         private static void AddNewGlossToDictionary(string swedishWord, string englishWord)
