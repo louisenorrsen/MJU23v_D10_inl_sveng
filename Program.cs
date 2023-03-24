@@ -47,23 +47,25 @@
                 {
                     if (dictionary.Count > 0) // FIXME: Lägg till felhantering med try-catch
                     {
-                        foreach (SweEngGloss gloss in dictionary)
-                        {
-                            Console.WriteLine($"{gloss.word_swe,-15}  - {gloss.word_eng,-15}");
-                        }
-                    } else
-                    {
-                        Console.WriteLine("The dictionary is empty, please load a file first!");
-                    }
+                        foreach (SweEngGloss gloss in dictionary) Console.WriteLine($"{gloss.word_swe,-15}  - {gloss.word_eng,-15}");
+
+                    } else Console.WriteLine("The dictionary is empty, please load a file first!");
                 }
                 else if (command == "new") // FIXME: System.IndexOutOfRangeException - om input är 'new sol'
                 {
-                    if (argument.Length > 1) AddNewGlossToDictionary(argument[1], argument[2]);
-                    else
+                    try
                     {
-                        string swedishWord = AskForSwedishWord();
-                        string englishWord = AskForEnglishWord();
-                        AddNewGlossToDictionary(swedishWord, englishWord);
+                        if (argument.Length > 1) AddNewGlossToDictionary(argument[1], argument[2]);
+                        else
+                        {
+                            string swedishWord = AskForSwedishWord();
+                            string englishWord = AskForEnglishWord();
+                            AddNewGlossToDictionary(swedishWord, englishWord);
+                        }
+                    }
+                    catch (System.IndexOutOfRangeException ex)
+                    {
+                        Console.WriteLine("The input was not valid, please enter one swdish word and one english word.\n" + ex.Message);
                     }
                 }
                 else if (command == "delete") // FIXME: System.ArgumentOutOfRangeException - om delete innan load
