@@ -2,7 +2,7 @@
 {
     internal class Program
     {
-        static List<SweEngGloss> dictionary;
+        static List<SweEngGloss> dictionary = new List<SweEngGloss> { };
         class SweEngGloss
         {
             public string word_swe, word_eng;
@@ -31,34 +31,13 @@
                 }
                 else if (command == "load")
                 {
-                    // FIXME: lägg till beskräftelse att filen laddats in korrekt
                     if(argument.Length == 2)
                     {
-                        using (StreamReader streamReader = new StreamReader(argument[1]))
-                        {
-                            dictionary = new List<SweEngGloss>(); // FIXME: Töm listan istället för att skapa en ny
-                            string line = streamReader.ReadLine();
-                            while (line != null)
-                            {
-                                SweEngGloss gloss = new SweEngGloss(line);
-                                dictionary.Add(gloss);
-                                line = streamReader.ReadLine();
-                            }
-                        }
+                        LoadFileWithWords(argument[1]);
                     }
                     else if(argument.Length == 1)
                     {
-                        using (StreamReader streamReader = new StreamReader(defaultFile))
-                        {
-                            dictionary = new List<SweEngGloss>(); // FIXME: Töm listan istället för att skapa en ny
-                            string line = streamReader.ReadLine();
-                            while (line != null)
-                            {
-                                SweEngGloss gloss = new SweEngGloss(line);
-                                dictionary.Add(gloss);
-                                line = streamReader.ReadLine();
-                            }
-                        }
+                        LoadFileWithWords(defaultFile);
                     }
                 }
                 else if (command == "list")
@@ -140,6 +119,22 @@
                 }
             }
             while (true);
+        }
+
+        private static void LoadFileWithWords(string fileName)
+        {
+            using (StreamReader streamReader = new StreamReader(fileName)) // FIXME ändra så agrumentet läses ifrån dict-mappen
+            {
+                dictionary.Clear();
+                string line = streamReader.ReadLine();
+                while (line != null)
+                {
+                    SweEngGloss gloss = new SweEngGloss(line);
+                    dictionary.Add(gloss);
+                    line = streamReader.ReadLine();
+                }
+            }
+            Console.WriteLine("File was readed correctly!");
         }
 
         private static string AskForEnglishWord()
