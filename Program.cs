@@ -19,7 +19,7 @@
         static void Main(string[] args)
         {
             bool quit = false;
-            string defaultFile = "..\\..\\..\\dict\\sweeng.lis";
+            string defaultFile = "sweeng.lis";
             Console.WriteLine("Welcome to the dictionary app!");
             do
             {
@@ -33,20 +33,33 @@
                 }
                 else if (command == "load")
                 {
-                    if(argument.Length > 1)
+                    try
                     {
-                        LoadFileWithWords(argument[1]);
+                        if (argument.Length > 1)
+                        {
+                            LoadFileWithWords(argument[1]);
+                        }
+                        else
+                        {
+                            LoadFileWithWords(defaultFile);
+                        }
                     }
-                    else
+                    catch (System.IO.FileNotFoundException ex)
                     {
-                        LoadFileWithWords(defaultFile);
+                        Console.WriteLine("The file was not found, please enter another file.\n" + ex.Message);
                     }
                 }
                 else if (command == "list")
                 {
-                    foreach(SweEngGloss gloss in dictionary)
+                    if (dictionary.Count > 0)
                     {
-                        Console.WriteLine($"{gloss.word_swe,-10}  - {gloss.word_eng,-10}");
+                        foreach (SweEngGloss gloss in dictionary)
+                        {
+                            Console.WriteLine($"{gloss.word_swe,-15}  - {gloss.word_eng,-15}");
+                        }
+                    } else
+                    {
+                        Console.WriteLine("The dictionary is empty, please load a file first!");
                     }
                 }
                 else if (command == "new")
@@ -128,7 +141,7 @@
 
         private static void LoadFileWithWords(string fileName)
         {
-            using (StreamReader streamReader = new StreamReader(fileName)) // FIXME ändra så agrumentet läses ifrån dict-mappen
+            using (StreamReader streamReader = new StreamReader($"..\\..\\..\\dict\\{fileName}")) // FIXME ändra så agrumentet läses ifrån dict-mappen
             {
                 dictionary.Clear();
                 string line = streamReader.ReadLine();
